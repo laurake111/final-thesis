@@ -15,5 +15,14 @@
     "scripts": [
       "background.js"
     ]
-  }
+  },
+  "permissions": ["tabs", "*://*.mail.google.com/*"],
+  "content_scripts": [
+    {
+      "matches": ["*://*.mail.google.com/*"],
+      "js": ["inject.js"],
+      "run_at": "document_end"
+    }
+  ],
+  "web_accessible_resources":["inject.css"]
 }

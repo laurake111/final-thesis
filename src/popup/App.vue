@@ -6,6 +6,7 @@
                     <div class="card-body">
                         <h5 class="card-title">Speech recogniser for Gmail</h5>
                         <p class="card-text">Google extension that supports writing emails on Gmail with speech recognition</p>
+                        <img id="google-logo" src="" alt="Gmail logo" height="42" width="42">
                         <a type="button" class="btn btn-outline-danger btn-sm" v-on:click="buttonSearch">Write email now</a>
                     </div>
                 </div>
@@ -16,6 +17,7 @@
 
 <script>
     const browser = require("webextension-polyfill");
+
     export default {
         data() {
             return {
@@ -24,7 +26,7 @@
         },
         methods: {
             buttonSearch() {
-                window.open("https://mail.google.com");
+                window.open("https://mail.google.com/mail/u/0/#inbox?compose=new");
             }
         }
     };
