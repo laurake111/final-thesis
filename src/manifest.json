@@ -20,6 +20,7 @@
     ]
   },
   "permissions": ["tabs",
+    "activeTab",
     "contextMenus",
     "*://*/*",
     "webNavigation"],
@@ -28,8 +29,8 @@
     {
       "matches": ["*://*/*"],
       "js": ["inject.js"],
-      "run_at": "document_end",
-      "all_frames": true
+      "run_at": "document_idle"
     }
-  ]
+  ],
+  "content_security_policy": "script-src 'self' 'unsafe-eval' https://maxcdn.bootstrapcdn.com https://ajax.googleapis.com; object-src 'self'"
 }

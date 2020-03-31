@@ -1,9 +1,18 @@
 global.browser = require('webextension-polyfill');
 
+let context = "editable";
+let title = "Dikteeri tekst antud tekstivälja";
+let id = chrome.contextMenus.create({"title": title, "contexts":[context],
+    "onclick": mycallback});
+console.log("'" + context + "' item:" + id);
+let tab_id = null;
+
+
 function mycallback(info, tab) {
     console.log("item " + info.menuItemId + " was clicked");
     console.log("info: " + JSON.stringify(info));
     console.log("tab: " + JSON.stringify(tab));
+    tab_id = tab.id;
 
     chrome.tabs.sendMessage(tab.id, "getClickedEl", function(clickedEl) {
         console.log("textfield value from inject.js: ", clickedEl);
@@ -17,26 +26,19 @@ function mycallback(info, tab) {
             top: 550
         }, function(win) {
             console.log("window opened: ", win);
-            chrome.tabs.sendMessage(win.tabs[0].id, "getVueElement", function(getVueElement) {
-                console.log("windows id: ", win.tabs[0].id);
-                console.log("vue value: ", getVueElement);
-            });
         });
     });
 }
 
-chrome.runtime.onMessageExternal.addListener(
+chrome.runtime.onMessage.addListener(
     function(request, sender, sendResponse) {
         console.log("request: ", request);
         console.log("sender: ", sender);
         console.log("sendRespinse: ", sendResponse);
 
         sendResponse("background.js ")
+        chrome.tabs.sendMessage(tab_id, "konetuvastus", function(clickedEl) {
+            console.log("vkonetuvastus: ", clickedEl);
+        });
     });
-
-let context = "editable";
-let title = "Dikteeri tekst antud tekstivälja";
-let id = chrome.contextMenus.create({"title": title, "contexts":[context],
-    "onclick": mycallback});
-console.log("'" + context + "' item:" + id);
 

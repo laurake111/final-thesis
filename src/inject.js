@@ -12,8 +12,8 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
     console.log("sender: ", sender);
     console.log("sendRespinse: ", sendResponse);
 
-    if(request === "getClickedEl") {
-        sendResponse({value: "inject.js sends response to background.js"});
-    }
+    sendResponse({value: "inject.js sends response to background.js"});
+    document.activeElement.innerHTML = request;
+
 });
 
