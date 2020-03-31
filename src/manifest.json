@@ -1,6 +1,6 @@
 {
-  "name": "speech-recognition",
-  "description": "Speech to text extension for gmail",
+  "name": "Kõnetuvastus",
+  "description": "Brauseri laiendus eestikeelse teksti dikteerimiseks kõnetuvastuse abil",
   "version": null,
   "manifest_version": 2,
   "icons": {
@@ -8,21 +8,28 @@
     "128": "icons/icon_128.png"
   },
   "browser_action": {
-    "default_title": "speech-recognition",
-    "default_popup": "popup/popup.html"
+    "default_title": "Kõnetuvastus"
   },
+  "externally_connectable": {
+    "matches": ["*://*/*"]
+  }
+  ,
   "background": {
     "scripts": [
       "background.js"
     ]
   },
-  "permissions": ["tabs", "*://*.mail.google.com/*"],
+  "permissions": ["tabs",
+    "contextMenus",
+    "*://*/*",
+    "webNavigation"],
+
   "content_scripts": [
     {
-      "matches": ["*://*.mail.google.com/*"],
+      "matches": ["*://*/*"],
       "js": ["inject.js"],
-      "run_at": "document_end"
+      "run_at": "document_end",
+      "all_frames": true
     }
-  ],
-  "web_accessible_resources":["inject.css"]
+  ]
 }
