@@ -42,6 +42,19 @@
     const browser = require("webextension-polyfill");
 
 
+    // The ID of the extension we want to talk to.
+    let editorExtensionId = "phpcplpomoffbfnlgfjhkphebebhbpge";
+
+    chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
+        console.log("request: ", request);
+        console.log("sender: ", sender);
+        console.log("sendRespinse: ", sendResponse);
+
+        if(request === "getVueElement") {
+            sendResponse({value: "appi ma ei taju from vue"});
+        }
+    });
+
     export default {
 
         data() {
@@ -53,7 +66,10 @@
             buttonSearch() {
                 console.log("im dumb didnt work");
 
-          
+                chrome.runtime.sendMessage(editorExtensionId, "message from vue",
+                    function(response) {
+                            console.log("im dumb but i WORK: ", response)
+                    });
             },
             toggle_visibility(id) {
                 let e = document.getElementById(id);
