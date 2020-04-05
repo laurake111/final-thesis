@@ -36,9 +36,15 @@ chrome.runtime.onMessage.addListener(
         console.log("sender: ", sender);
         console.log("sendRespinse: ", sendResponse);
 
-        sendResponse("background.js ")
-        chrome.tabs.sendMessage(tab_id, "konetuvastus", function(clickedEl) {
-            console.log("vkonetuvastus: ", clickedEl);
-        });
+        if (request.type === "FROM_VUE") {
+            sendResponse("background.js ");
+            chrome.tabs.sendMessage(tab_id,
+                {type:"FROM_BACKGROUND",value:"konetuvastus"},
+                function(clickedEl) {
+                console.log("vkonetuvastus: ", clickedEl);
+            });
+        } else {
+            console.log("unknown request type:", request)
+        }
     });
 

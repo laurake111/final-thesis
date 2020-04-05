@@ -1,5 +1,5 @@
 //content script
-var clickedEl = null;
+let clickedEl = null;
 
 document.addEventListener("mousedown", function(event){
     if(event.button === 2) {
@@ -10,18 +10,24 @@ document.addEventListener("mousedown", function(event){
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
     console.log("request: ", request);
     console.log("sender: ", sender);
-    console.log("sendRespinse: ", sendResponse);
-
-    sendResponse({value: "inject.js sends response to background.js"});
+    console.log("sendResponse: ", sendResponse);
 
 
-    var activeElement = document.activeElement;
-    var inputs = ['input', 'textarea'];
+    sendResponse();
 
-    if (activeElement && inputs.indexOf(activeElement.tagName.toLowerCase()) !== -1) {
-        document.activeElement.value = request;
-    } else {
-        document.activeElement.innerHTML = request;
+    if(request.type === 'FROM_BACKGROUND'){
+        let activeElement = document.activeElement;
+        let inputs = ['input', 'textarea'];
+
+        if (activeElement && inputs.indexOf(activeElement.tagName.toLowerCase()) !== -1) {
+            console.log('im an input or textarea');
+            document.activeElement.value = request.value;
+        } else {
+            console.log('im a div');
+            document.activeElement.innerHTML = request.value;
+        }
     }
+
+
 });
 

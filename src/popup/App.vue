@@ -55,7 +55,8 @@
         methods: {
             buttonSearch() {
 
-                chrome.runtime.sendMessage(editorExtensionId, "message from vue",
+                chrome.runtime.sendMessage(editorExtensionId,
+                    {type:"FROM_VUE",value:"message from vue"},
                     function(response) {
                             console.log("im dumb but i WORK: ", response)
                     });
