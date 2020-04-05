@@ -43,7 +43,7 @@
 
 
     // The ID of the extension we want to talk to.
-    let editorExtensionId = "phpcplpomoffbfnlgfjhkphebebhbpge";
+    let editorExtensionId = "lmaehgbgmcanenelmfkhidbljcgabpli";
 
     export default {
 
