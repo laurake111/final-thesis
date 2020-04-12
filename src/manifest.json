@@ -10,14 +10,11 @@
   "browser_action": {
     "default_title": "Kõnetuvastus"
   },
-  "externally_connectable": {
-    "matches": ["*://*/*"]
-  }
-  ,
   "background": {
     "scripts": [
       "background.js"
-    ]
+    ],
+    "persistent": true
   },
   "permissions": ["tabs",
     "activeTab",
@@ -28,7 +25,8 @@
   "content_scripts": [
     {
       "matches": ["*://*/*"],
-      "js": ["inject.js"],
+      "js": ["inject.js"
+      ],
       "run_at": "document_idle"
     }
   ],

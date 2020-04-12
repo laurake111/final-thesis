@@ -21,6 +21,9 @@
                         </div>
                         <div id="siri-container"></div>
                         <a type="button" class="btn btn-outline-danger btn-sm" v-on:click="buttonSearch">Lõpeta</a>
+
+                        <textarea rows="8" cols="80" id="trans">
+                        </textarea>
                     </div>
                 </div>
             </div>
@@ -29,7 +32,7 @@
 </template>
 
 <script>
-    import SiriWave from 'siriwave';
+    import SiriWave from '../siriwave.js';
 
     let siriWave = new SiriWave({
         container: document.getElementById('siri-container'),
@@ -52,9 +55,13 @@
                 keyword: "",
             };
         },
+        components: {
+            SiriWave
+        },
         methods: {
             buttonSearch() {
-
+                // dictate
+                dictate.startListening();
                 chrome.runtime.sendMessage(editorExtensionId,
                     {type:"FROM_VUE",value:"message from vue"},
                     function(response) {

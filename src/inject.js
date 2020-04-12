@@ -13,7 +13,7 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
     console.log("sendResponse: ", sendResponse);
 
 
-    sendResponse();
+    sendResponse({value: "inject.js sends response to background.js"});
 
     if(request.type === 'FROM_BACKGROUND'){
         let activeElement = document.activeElement;
@@ -27,7 +27,5 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
             document.activeElement.innerHTML = request.value;
         }
     }
-
-
 });
 

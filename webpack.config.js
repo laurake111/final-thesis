@@ -13,6 +13,9 @@ const config = {
     'background': './background.js',
     'popup/popup': './popup/popup.js',
     'inject': './inject.js',
+    'inject': './inject.js',
+    'inject': './inject.js',
+
   },
   output: {
     path: __dirname + '/dist',
@@ -75,6 +78,12 @@ const config = {
     new CopyPlugin([
       { from: 'icons', to: 'icons', ignore: ['icon.xcf'] },
       { from: 'popup/popup.html', to: 'popup/popup.html', transform: transformHtml },
+      { from: 'dictate/dictate.js'},
+      { from: 'dictate/recorder.js'},
+      { from: 'dictate/recorderWorker.js'},
+      { from: 'jquery-1.10.2.min.js'},
+      { from: 'dictApplication.js'},
+
       {
         from: 'manifest.json',
         to: 'manifest.json',

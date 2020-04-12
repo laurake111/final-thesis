@@ -38,6 +38,7 @@ chrome.runtime.onMessage.addListener(
 
         if (request.type === "FROM_VUE") {
             sendResponse("background.js ");
+
             chrome.tabs.sendMessage(tab_id,
                 {type:"FROM_BACKGROUND",value:"konetuvastus"},
                 function(clickedEl) {
