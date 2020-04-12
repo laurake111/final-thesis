@@ -72,12 +72,10 @@ function __serverStatus(msg) {
 
 function __updateTranscript(text) {
     $("#trans").val(text);
+
 }
 
 // Public methods (called from the GUI)
-function toggleLog() {
-    $(log).toggle();
-}
 function clearLog() {
     log.innerHTML = "";
 }

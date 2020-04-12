@@ -20,10 +20,9 @@
                             </p>
                         </div>
                         <div id="siri-container"></div>
-                        <a type="button" class="btn btn-outline-danger btn-sm" v-on:click="buttonSearch">Lõpeta</a>
-
-                        <textarea rows="8" cols="80" id="trans">
-                        </textarea>
+                        <a type="button" class="btn btn-outline-danger btn-sm" v-on:click="startDictate">Alusta</a>
+                        <a type="button" class="btn btn-outline-danger btn-sm" v-on:click="stopDictate">Lõpeta</a>
+                        <textarea rows="8" cols="20" id="trans"></textarea>
                     </div>
                 </div>
             </div>
@@ -59,13 +58,16 @@
             SiriWave
         },
         methods: {
-            buttonSearch() {
-                // dictate
+            startDictate() {
                 dictate.startListening();
+            },
+            stopDictate() {
+                dictate.stopListening();
                 chrome.runtime.sendMessage(editorExtensionId,
-                    {type:"FROM_VUE",value:"message from vue"},
+                    {type:"FROM_VUE",value:tt.toString()},
                     function(response) {
-                            console.log("im dumb but i WORK: ", response)
+                        console.log(tt.toString());
+                        console.log("i WORK: ", response)
                     });
             },
             toggle_visibility(id) {

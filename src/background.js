@@ -40,7 +40,7 @@ chrome.runtime.onMessage.addListener(
             sendResponse("background.js ");
 
             chrome.tabs.sendMessage(tab_id,
-                {type:"FROM_BACKGROUND",value:"konetuvastus"},
+                {type:"FROM_BACKGROUND",value: request.value},
                 function(clickedEl) {
                 console.log("vkonetuvastus: ", clickedEl);
             });
