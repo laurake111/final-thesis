@@ -13,9 +13,6 @@ const config = {
     'background': './background.js',
     'popup/popup': './popup/popup.js',
     'inject': './inject.js',
-    'inject': './inject.js',
-    'inject': './inject.js',
-
   },
   output: {
     path: __dirname + '/dist',
@@ -36,16 +33,8 @@ const config = {
         exclude: /node_modules/,
       },
       {
-        test: /\.css$/,
-        use: [MiniCssExtractPlugin.loader, 'css-loader'],
-      },
-      {
         test: /\.scss$/,
         use: [MiniCssExtractPlugin.loader, 'css-loader', 'sass-loader'],
-      },
-      {
-        test: /\.sass$/,
-        use: [MiniCssExtractPlugin.loader, 'css-loader', 'sass-loader?indentedSyntax'],
       },
       {
         test: /\.(png|jpg|jpeg|gif|svg|ico)$/,
@@ -81,7 +70,6 @@ const config = {
       { from: 'dictate/dictate.js'},
       { from: 'dictate/recorder.js'},
       { from: 'dictate/recorderWorker.js'},
-      { from: 'jquery-1.10.2.min.js'},
       { from: 'dictApplication.js'},
 
       {
@@ -91,20 +79,20 @@ const config = {
           const jsonContent = JSON.parse(content);
           jsonContent.version = version;
 
-          if (config.mode === 'development') {
-            jsonContent['content_security_policy'] = "script-src 'self' 'unsafe-eval'; object-src 'self'";
-          }
+          // if (config.mode === 'development') {
+          //   jsonContent['content_security_policy'] = "script-src 'self' 'unsafe-eval'; object-src 'self'";
+          // }
 
           return JSON.stringify(jsonContent, null, 2);
         },
       },
     ]),
   ],
-};
+    };
 
-if (config.mode === 'production') {
-  config.plugins = (config.plugins || []).concat([
-    new webpack.DefinePlugin({
+  if (config.mode === 'production') {
+    config.plugins = (config.plugins || []).concat([
+      new webpack.DefinePlugin({
       'process.env': {
         NODE_ENV: '"production"',
       },

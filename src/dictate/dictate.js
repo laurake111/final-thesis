@@ -195,26 +195,6 @@
 			config.onEvent(MSG_SERVER_CHANGED, 'Server status server changed: ' + serverStatus);
 		}
 
-		// Sends reference text to speech server
-		this.submitReference = function submitReference(text, successCallback, errorCallback) {
-			var headers = {}
-			if (config["user_id"]) {
-				headers["User-Id"] = config["user_id"]
-			}
-			if (config["content_id"]) {
-				headers["Content-Id"] = config["content_id"]
-			}
-			$.ajax({
-				url: config.referenceHandler,
-				type: "POST",
-				headers: headers,
-				data: text,
-				dataType: "text",
-				success: successCallback,
-				error: errorCallback,
-			});
-		}
-
 		// Private methods
 		function socketSend(item) {
 			if (ws) {
