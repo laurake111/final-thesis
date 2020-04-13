@@ -16,6 +16,8 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
     sendResponse({value: "inject.js sends response to background.js"});
 
     if(request.type === 'FROM_BACKGROUND'){
+
+        console.log('request.value', request.value)
         let activeElement = document.activeElement;
         let inputs = ['input', 'textarea'];
 
@@ -26,6 +28,9 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
             console.log('im a div');
             document.activeElement.innerHTML = request.value;
         }
+    } else {
+        console.log('unknown request, ', request)
     }
+
 });
 

@@ -130,7 +130,7 @@
 			}
 
 			if (ws) {
-				cancel();
+				this.cancel();
 			}
 
 			try {

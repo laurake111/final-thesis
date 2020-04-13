@@ -22,7 +22,8 @@
                         <div id="siri-container"></div>
                         <a type="button" class="btn btn-outline-danger btn-sm" v-on:click="startDictate">Alusta</a>
                         <a type="button" class="btn btn-outline-danger btn-sm" v-on:click="stopDictate">Lõpeta</a>
-                        <textarea rows="8" cols="20" id="trans"></textarea>
+                        <br>
+                        <span> Text: {{ transcriptTextBox }}</span>
                     </div>
                 </div>
             </div>
@@ -41,32 +42,73 @@
     });
     siriWave.start();
 
-    const browser = require("webextension-polyfill");
-
 
     // The ID of the extension we want to talk to.
     let editorExtensionId = "lmaehgbgmcanenelmfkhidbljcgabpli";
+    const browser = require("webextension-polyfill");
+
 
     export default {
 
         data() {
             return {
-                keyword: "",
+                transcriptTextBox: '',
             };
+        },
+        created: function () {
+
+            var tt = new Transcription();
+
+            var dictate = new Dictate({
+                recorderWorkerPath : '../recorderWorker.js',
+                onReadyForSpeech : function() {
+                    console.log("READY FOR SPEECH");
+                },
+                onEndOfSpeech : function() {
+                    console.log("END OF SPEECH");
+                },
+                onEndOfSession : function() {
+                    console.log("END OF SESSION");
+                },
+                onPartialResults : function(hypos) {
+                    tt.add(hypos[0].transcript, false);
+                    console.log(tt.toString());
+                    this.transcriptTextBox = tt.toString();
+                }.bind(this),
+                onResults : function(hypos) {
+                    tt.add(hypos[0].transcript, true);
+                    console.log(tt.toString());
+                    this.transcriptTextBox = tt.toString();
+                }.bind(this),
+                onError : function(code, data) {
+                    console.log("code er:", code, data)
+
+                    dictate.cancel();
+                },
+                onEvent : function(code, data) {
+                    console.log(code, data);
+                }
+            });
+
+            this.dictate = dictate;
+            this.tt = tt;
+            this.dictate.init();
+
         },
         components: {
             SiriWave
         },
         methods: {
             startDictate() {
-                dictate.startListening();
+                console.log("started listening");
+                this.dictate.startListening();
             },
             stopDictate() {
-                dictate.stopListening();
+                this.dictate.stopListening();
+                console.log('this is tt: ',this.tt.toString());
                 chrome.runtime.sendMessage(editorExtensionId,
-                    {type:"FROM_VUE",value:tt.toString()},
+                    {type:"FROM_VUE",value:this.tt.toString()},
                     function(response) {
-                        console.log(tt.toString());
                         console.log("i WORK: ", response)
                     });
             },
