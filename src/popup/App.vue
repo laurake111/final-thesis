@@ -38,9 +38,13 @@
         container: document.getElementById('siri-container'),
         width: 450,
         height: 200,
-        style: "ios9"
+        cover: true,
+        color: '#e640cf',
+        style: "ios"
     });
+
     siriWave.start();
+    siriWave.setAmplitude(0);
 
 
     // The ID of the extension we want to talk to.
@@ -100,11 +104,13 @@
         },
         methods: {
             startDictate() {
-                console.log("started listening");
+                console.log("started llistening");
+                siriWave.setAmplitude(1);
                 this.dictate.startListening();
             },
             stopDictate() {
                 this.dictate.stopListening();
+                siriWave.setAmplitude(0);
                 console.log('this is tt: ',this.tt.toString());
                 chrome.runtime.sendMessage(editorExtensionId,
                     {type:"FROM_VUE",value:this.tt.toString()},
