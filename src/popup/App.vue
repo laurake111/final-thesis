@@ -7,7 +7,7 @@
                         <h5 class="card-title">Dikteeri!</h5>
                         <div class="col-md-12">
                             <div class="info">
-                                <i class="icon-info-sign" type="button" v-on:click="toggle_visibility('info')"></i>
+                                <img class="info-img" src="info-circle-solid.svg" type="button" v-on:click="toggle_visibility('info')"></img>
                             </div><br/>
                         </div>
                         <div id="info">
@@ -23,7 +23,7 @@
                         <a type="button" class="btn btn-outline-danger btn-sm" v-on:click="startDictate">Alusta</a>
                         <a type="button" class="btn btn-outline-danger btn-sm" v-on:click="stopDictate">Lõpeta</a>
                         <br>
-                        <span> Text: {{ transcriptTextBox }}</span>
+                        <span>{{ transcriptTextBox }}</span>
                     </div>
                 </div>
             </div>
@@ -155,6 +155,10 @@
         :hover {
             color: white;
         }
+    }
+
+    .info-img {
+        height: 18px;
     }
 
 </style>

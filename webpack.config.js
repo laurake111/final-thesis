@@ -7,7 +7,7 @@ const { VueLoaderPlugin } = require('vue-loader');
 const { version } = require('./package.json');
 
 const config = {
-  // mode: process.env.NODE_ENV,
+  mode: process.env.NODE_ENV,
   context: __dirname + '/src',
   entry: {
     'background': './background.js',
@@ -71,6 +71,8 @@ const config = {
       { from: 'dictate/recorder.js'},
       { from: 'dictate/recorderWorker.js'},
       { from: 'dictApplication.js'},
+      { from: 'bootstrap.min.css'},
+      { from: 'popup/info-circle-solid.svg', to: 'popup/info-circle-solid.svg'},
 
       {
         from: 'manifest.json',

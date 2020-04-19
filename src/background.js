@@ -12,6 +12,10 @@ function mycallback(info, tab) {
     console.log("item " + info.menuItemId + " was clicked");
     console.log("info: " + JSON.stringify(info));
     console.log("tab: " + JSON.stringify(tab));
+
+    chrome.tabs.executeScript({
+        file: 'inject.js'
+    });
     tab_id = tab.id;
 
     chrome.tabs.sendMessage(tab.id, "getClickedEl", function(clickedEl) {
@@ -42,7 +46,7 @@ chrome.runtime.onMessage.addListener(
             chrome.tabs.sendMessage(tab_id,
                 {type:"FROM_BACKGROUND",value: request.value},
                 function(clickedEl) {
-                console.log("vkonetuvastus: ", clickedEl);
+                console.log("konetuvastus: ", clickedEl);
             });
         } else {
             console.log("unknown request type:", request)
