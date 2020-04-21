@@ -1,7 +1,7 @@
 {
   "name": "Kõnetuvastus",
   "description": "Brauseri laiendus eestikeelse teksti dikteerimiseks kõnetuvastuse abil",
-  "version": "0.1",
+  "version": "0.2",
   "manifest_version": 2,
   "icons": {
     "48": "icons/icon_48.png",

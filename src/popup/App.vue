@@ -48,7 +48,7 @@
 
 
     // The ID of the extension we want to talk to.
-    let editorExtensionId = "lmaehgbgmcanenelmfkhidbljcgabpli";
+    let editorExtensionId = "flknjambpipjohjmnghlgilngpcenaii";
     const browser = require("webextension-polyfill");
 
 

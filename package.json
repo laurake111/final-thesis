@@ -1,6 +1,6 @@
 {
   "name": "speech-recognition",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "Speech to text extension for gmail",
   "author": "Laura Leisberg",
   "license": "MIT",
