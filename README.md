@@ -14,7 +14,18 @@ Projekti kompileerimine ja arenduskeskkonna loomine
 
 ```
 npm run watch:dev
+
 ```
+
+
+Chrome veebipoodi laadimiseks vaja pakendada zip faili
+
+```
+npm run build
+npm run build-zip
+
+```
+
 
 ## Tehnoloogiad
 
