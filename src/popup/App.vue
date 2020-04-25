@@ -7,13 +7,12 @@
                          src="info-circle-solid.svg" type="button">
                     </img>
                     <p class="tooltiptext">
-                        Dikteerida selge häälega ja mõõdukas tempos.
-                        Sõnade vahel pause ei pea tegema.
-                        Dikteerida saab ka kirjavahemärke (",.!?:;") ja reavahetusi (ütle "uus rida").
+                        Dikteerida selge häälega ja mõõdukas tempos.<br>
+                        Sõnade vahel pause ei pea tegema.<br>
+                        Dikteerida saab kirjavahemärke (",.!?:;") ja reavahetusi (ütle "uus rida").<br>
                     </p>
-                </div><br/>
-
-
+                </div>
+                <br/>
                 <div contenteditable="true" class="txtBox" v-html="popupTranscript">
                     {{ popupTranscript }}
                 </div>
@@ -37,9 +36,8 @@
     import SiriWave from '../siriwave.js';
 
     // The ID of the extension we want to talk to.
-    let editorExtensionId = "flknjambpipjohjmnghlgilngpcenaii";
+    let editorExtensionId = "lbngllkoamojlnmcijckkgmgehkgpkma";
     const browser = require("webextension-polyfill");
-
 
     export default {
         data() {
@@ -47,7 +45,6 @@
                 transcriptTextBox: '',
                 popupTranscript: '',
                 recording: false,
-                microfoneWorks: false,
                 siriWave: null
             };
         },
@@ -117,11 +114,7 @@
                     } else {
                         text = text + token;
                     }
-                    if (token === "." || /\n$/.test(token)) {
-                        doCapitalizeNext = true;
-                    } else {
-                        doCapitalizeNext = false;
-                    }
+                    doCapitalizeNext = token === "." || /\n$/.test(token);
                 });
 
                 text = text.replace(/ ([,.!?:;])/g, "\$1");
@@ -160,9 +153,11 @@
                 chrome.runtime.sendMessage(editorExtensionId,
                     {type: "FROM_VUE", value: this.transcriptTextBox},
                     function (response) {
-                        console.log("i WORK: ", response)
+                        console.log("I WORK: ", response);
+                        window.close();
                     });
                 this.recording = false;
+
             },
             getAverage(array) {
                 var values = 0;
@@ -200,14 +195,12 @@
                 this.siriWave = new SiriWave({
                     container: document.getElementById('siri-container'),
                     width: 600,
-                    height:200,
+                    height: 200,
                     color: '#50CDDD',
                     style: "ios",
                     autostart: true,
-                    amplitude:0
+                    amplitude: 0
                 });
-
-
             }
         },
         mounted() {
@@ -257,10 +250,14 @@
     }
 
     .txtBox {
-        /*border: solid 0.5px hotpink;*/
         overflow: auto;
         color: white;
         margin-top: 50px;
+        font-family: 'Open Sans', sans-serif;
+        font-size: 15px;
+        font-weight: 400;
+        line-height: 24px;
+        text-align: left;
     }
 
     .tooltip {
@@ -275,9 +272,11 @@
         width: 250px;
         background-color: black;
         color: #fff;
-        text-align: center;
+        /*text-align: center;*/
+        text-align: left;
+        padding: 10px;
         border-radius: 6px;
-        padding: 5px 0;
+        border: solid 0.5px #50CDDD;
         position: absolute;
         z-index: 1;
         top: 100%;
