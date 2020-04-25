@@ -20,10 +20,9 @@
                             </p>
                         </div>
                         <div id="siri-container"></div>
-                        <a type="button" class="btn btn-outline-danger btn-sm" v-on:click="startDictate">Alusta</a>
-                        <a type="button" class="btn btn-outline-danger btn-sm" v-on:click="stopDictate">Lõpeta</a>
+                        <a type="button" class="btn btn-outline-danger btn-sm" v-on:click="dictateButtonAction">Alusta</a>
                         <br>
-                        <span>{{ transcriptTextBox }}</span>
+                        <textarea>{{ transcriptTextBox }}</textarea>
                     </div>
                 </div>
             </div>
@@ -48,7 +47,7 @@
 
 
     // The ID of the extension we want to talk to.
-    let editorExtensionId = "flknjambpipjohjmnghlgilngpcenaii";
+    let editorExtensionId = "lbngllkoamojlnmcijckkgmgehkgpkma";
     const browser = require("webextension-polyfill");
 
 
@@ -57,12 +56,10 @@
         data() {
             return {
                 transcriptTextBox: '',
+                recording: false,
             };
         },
         created: function () {
-
-            var tt = new Transcription();
-
             var dictate = new Dictate({
                 recorderWorkerPath : '../recorderWorker.js',
                 onReadyForSpeech : function() {
@@ -75,18 +72,31 @@
                     console.log("END OF SESSION");
                 },
                 onPartialResults : function(hypos) {
-                    tt.add(hypos[0].transcript, false);
-                    console.log(tt.toString());
-                    this.transcriptTextBox = tt.toString();
+                    let spokenText = spokenTextFormat(hypos[0].transcript, this.doUpper, this.doPrependSpace);
+
+                    let oldtext = this.transcriptTextBox.slice(0, this.startPosition);
+                    let oldtextEnd = this.transcriptTextBox.slice(this.endPosition);
+
+                    this.transcriptTextBox =  oldtext + spokenText + oldtextEnd;
+
+                    this.endPosition = this.startPosition + spokenText.length;
                 }.bind(this),
                 onResults : function(hypos) {
-                    tt.add(hypos[0].transcript, true);
-                    console.log(tt.toString());
-                    this.transcriptTextBox = tt.toString();
+                    let spokenText = spokenTextFormat(hypos[0].transcript, this.doUpper, this.doPrependSpace);
+
+                    let oldtext = this.transcriptTextBox.slice(0, this.startPosition);
+                    let oldtextEnd = this.transcriptTextBox.slice(this.endPosition);
+
+                    this.transcriptTextBox =  oldtext + spokenText + oldtextEnd;
+
+                    this.startPosition = this.startPosition + spokenText.length;
+                    this.endPosition = this.startPosition;
+
+                    this.doUpper = /\. *$/.test(this.transcriptTextBox) || /\n *$/.test(this.transcriptTextBox);
+                    this.doPrependSpace = (this.transcriptTextBox.length > 0) && !(/\n *$/.test(this.transcriptTextBox));
                 }.bind(this),
                 onError : function(code, data) {
-                    console.log("code er:", code, data)
-
+                    console.log("code er:", code, data);
                     dictate.cancel();
                 },
                 onEvent : function(code, data) {
@@ -94,39 +104,85 @@
                 }
             });
 
+            function capitaliseFirstLetter(string) {
+                return string.charAt(0).toUpperCase() + string.slice(1);
+            }
+
+            function spokenTextFormat(text, doCapFirst, doPrependSpace) {
+                if (doCapFirst) {
+                    text = capitaliseFirstLetter(text);
+                }
+                let tokens = text.split(" ");
+                text = "";
+                if (doPrependSpace) {
+                    text = " ";
+                }
+                let doCapitalizeNext = false;
+                tokens.map(function(token) {
+                    if (text.trim().length > 0) {
+                        text = text + " ";
+                    }
+                    if (doCapitalizeNext) {
+                        text = text + capitaliseFirstLetter(token);
+                    } else {
+                        text = text + token;
+                    }
+                    if (token === "." ||  /\n$/.test(token)) {
+                        doCapitalizeNext = true;
+                    } else {
+                        doCapitalizeNext = false;
+                    }
+                });
+
+                text = text.replace(/ ([,.!?:;])/g,  "\$1");
+                text = text.replace(/ ?\n ?/g,  "\n");
+                return text;
+            }
+
             this.dictate = dictate;
-            this.tt = tt;
             this.dictate.init();
+            this.recording = false;
+            this.doUpper  = false;
+            this.doPrependSpace = true;
+            this.startPosition = 0;
+            this.endPosition = 0;
+
+
 
         },
         components: {
             SiriWave
         },
         methods: {
-            startDictate() {
-                console.log("started llistening");
-                siriWave.setAmplitude(1);
-                this.dictate.startListening();
-            },
-            stopDictate() {
-                this.dictate.stopListening();
-                siriWave.setAmplitude(0);
-                console.log('this is tt: ',this.tt.toString());
-                chrome.runtime.sendMessage(editorExtensionId,
-                    {type:"FROM_VUE",value:this.tt.toString()},
-                    function(response) {
-                        console.log("i WORK: ", response)
-                    });
+            dictateButtonAction() {
+                if (this.recording === false) {
+                    console.log("started listening");
+                    siriWave.setAmplitude(1);
+                    this.dictate.startListening();
+                    this.recording = true;
+                } else {
+                    console.log('stopped listeinng')
+                    this.dictate.stopListening();
+                    siriWave.setAmplitude(0);
+                    console.log('this is tt: ', this.transcriptTextBox);
+                    chrome.runtime.sendMessage(editorExtensionId,
+                        {type:"FROM_VUE",value: this.transcriptTextBox},
+                        function(response) {
+                            console.log("i WORK: ", response)
+                        });
+                    this.recording = true;
+                }
+
             },
             toggle_visibility(id) {
                 let e = document.getElementById(id);
-                if(e.style.display === 'block')
+                if(e.style.display === 'block') {
                     e.style.display = 'none';
-                else
+                } else {
                     e.style.display = 'block';
-            }
-        }
-    };
+                }}
+             },
+    }
 </script>
 
 <style lang="scss" scoped>

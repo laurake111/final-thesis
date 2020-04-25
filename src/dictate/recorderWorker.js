@@ -100,6 +100,7 @@ Resampler.prototype.compileInterpolationFunction = function () {
 	else {\
 		throw(new Error(\"Buffer was of incorrect sample length.\"));\
 	}";
+
 	this.interpolate = Function("buffer", toCompile);
 }
 Resampler.prototype.bypassResampler = function (buffer) {

@@ -26,7 +26,7 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
             document.activeElement.value = request.value;
         } else {
             console.log('im a div');
-            document.activeElement.innerHTML = request.value;
+            document.activeElement.innerHTML = request.value.replace(/\n/g, "<br>");
         }
     } else {
         console.log('unknown request, ', request)

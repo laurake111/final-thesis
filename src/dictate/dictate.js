@@ -57,6 +57,7 @@
 		config.onEvent = config.onEvent || function(e, data) {};
 		config.onError = config.onError || function(e, data) {};
 		config.rafCallback = config.rafCallback || function(time) {};
+		window.config=config;
 		if (config.onServerStatus) {
 			monitorServerStatus();
 		}
@@ -243,7 +244,7 @@
 					config.onError(ERR_SERVER, 'WebSocket: got Blob');
 				} else {
 					var res = JSON.parse(data);
-					if (res.status == 0) {
+					if (res.status === 0) {
 						if (res.result) {
 							if (res.result.final) {
 								config.onResults(res.result.hypotheses);
