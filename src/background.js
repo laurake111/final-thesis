@@ -25,7 +25,7 @@ function mycallback(info, tab) {
             url: chrome.runtime.getURL("popup/popup.html"),
             type: "popup",
             width: 500,
-            height: 450,
+            height: 600,
             left: 20,
             top: 550
         }, function(win) {

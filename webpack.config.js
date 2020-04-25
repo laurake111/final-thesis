@@ -73,6 +73,9 @@ const config = {
       { from: 'dictApplication.js'},
       { from: 'bootstrap.min.css'},
       { from: 'popup/info-circle-solid.svg', to: 'popup/info-circle-solid.svg'},
+      { from: 'popup/mic.svg', to: 'popup/mic.svg'},
+      { from: 'popup/pause.svg', to: 'popup/pause.svg'},
+      { from: 'popup/micslash.svg', to: 'popup/micslash.svg'},
 
       {
         from: 'manifest.json',
