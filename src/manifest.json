@@ -8,7 +8,8 @@
     "128": "icons/icon_128.png"
   },
   "browser_action": {
-    "default_title": "Kõnetuvastus"
+    "default_title": "Kõnetuvastus",
+    "default_popup": "infotab/info.html"
   },
   "background": {
     "scripts": [

@@ -12,6 +12,7 @@ const config = {
   entry: {
     'background': './background.js',
     'popup/popup': './popup/popup.js',
+    'infotab/info': './infotab/info.js',
     'inject': './inject.js',
   },
   output: {
@@ -67,6 +68,7 @@ const config = {
     new CopyPlugin([
       { from: 'icons', to: 'icons', ignore: ['icon.xcf'] },
       { from: 'popup/popup.html', to: 'popup/popup.html', transform: transformHtml },
+      { from: 'infotab/info.html', to: 'infotab/info.html', transform: transformHtml },
       { from: 'dictate/dictate.js'},
       { from: 'dictate/recorder.js'},
       { from: 'dictate/recorderWorker.js'},
@@ -76,6 +78,8 @@ const config = {
       { from: 'popup/mic.svg', to: 'popup/mic.svg'},
       { from: 'popup/pause.svg', to: 'popup/pause.svg'},
       { from: 'popup/micslash.svg', to: 'popup/micslash.svg'},
+      { from: 'infotab/icon.png', to: 'infotab/icon.png'},
+      { from: 'infotab/how.png', to: 'infotab/how.png'},
 
       {
         from: 'manifest.json',
@@ -84,9 +88,9 @@ const config = {
           const jsonContent = JSON.parse(content);
           jsonContent.version = version;
 
-          // if (config.mode === 'development') {
-          //   jsonContent['content_security_policy'] = "script-src 'self' 'unsafe-eval'; object-src 'self'";
-          // }
+          if (config.mode === 'development') {
+            jsonContent['content_security_policy'] = "script-src 'self' 'unsafe-eval'; object-src 'self'";
+          }
 
           return JSON.stringify(jsonContent, null, 2);
         },
